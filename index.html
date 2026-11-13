@@ -10,7 +10,7 @@
 <style>
 :root{color-scheme:dark;--bg:#102342;--panel:#243f70;--line:#385987;--text:#f3f7ff;--muted:#b9cbe5;--accent:#69a7e8;--accent2:#3979b9}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(155deg,#18345c,#102342 58%,#0b1a30);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{max-width:740px;margin:auto;padding:22px 14px 44px}h1{margin:0 0 8px;font-size:29px;letter-spacing:1.3px}
+main{max-width:740px;margin:auto;padding:22px 14px 44px}header{text-align:center;min-width:0}h1{margin:0 0 8px;font-size:clamp(23px,6.2vw,29px);letter-spacing:1.3px;white-space:nowrap;line-height:1.2}
 .card{background:rgba(36,63,112,.92);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 8px 22px #07162b55}
 h2{font-size:18px;margin:0 0 14px}.muted,.meta,.note{color:var(--muted)}
 .field{margin:12px 0}.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px}
@@ -25,7 +25,7 @@ textarea{min-height:72px}.months{display:grid;grid-template-columns:repeat(3,1fr
 .probe>input{width:22px;height:22px;accent-color:var(--accent)}.probe-main{flex:1;min-width:0}
 .probe-name{font-weight:650;overflow-wrap:anywhere}.meta{font-size:12px;margin-top:5px}
 .desc{font-size:14px;margin-top:7px;white-space:pre-wrap;overflow-wrap:anywhere}
-.actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.iconbtn{background:#315584;color:#eaf4ff;font-size:16px;min-width:34px;min-height:32px;padding:5px 8px;border-radius:8px}
+.actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.iconbtn{background:#315584;color:#eaf4ff;font-size:14px;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border-radius:9px;opacity:.92;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}.iconbtn:active{background:#477db5;opacity:1}
 .empty{text-align:center;color:var(--muted);padding:22px}.note{font-size:12px;line-height:1.5;margin-top:12px}
 .form-toggle{width:100%;background:#315584;color:#fff;text-align:left;margin-top:16px}
 .form-card[hidden]{display:none}.count{font-weight:700;color:#b9dcff}
@@ -65,20 +65,21 @@ let p={name,quarter:$('quarter').value,months,details:$('details').value.trim()}
 if(editing!==null)data[editing]={...data[editing],...p};else{let max=Math.max(-1,...data.map(x=>Number(x.order)||0));data.push({...p,done:false,order:max+1})}
 closeForm();persist()};
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function ordered(){return data.map((p,i)=>({...p,i})).sort((a,b)=>(a.order??a.i)-(b.order??b.i))}
-function move(i,dir){let arr=ordered(),pos=arr.findIndex(p=>p.i===i),target=pos+dir;if(target<0||target>=arr.length)return;let a=arr[pos],b=arr[target],v=a.order??pos;a.order=b.order??target;b.order=v;persist()}
+function viewKey(){return view==='month'?'month:'+month:view}
+function ordered(key=viewKey()){return data.map((p,i)=>({...p,i})).sort((a,b)=>{let av=Number.isFinite(a.viewOrder?.[key])?a.viewOrder[key]:(Number(a.order??a.i)+1000000);let bv=Number.isFinite(b.viewOrder?.[key])?b.viewOrder[key]:(Number(b.order??b.i)+1000000);return av-bv||a.i-b.i})}
+function move(i,dir){let key=viewKey(),arr=ordered(key);if(view==='open')arr=arr.filter(p=>!p.done);else if(view==='done')arr=arr.filter(p=>p.done);else arr=arr.filter(p=>!p.done&&p.months.includes(month));let pos=arr.findIndex(p=>p.i===i),target=pos+dir;if(pos<0||target<0||target>=arr.length)return;arr.forEach((p,n)=>{if(!p.viewOrder||typeof p.viewOrder!=='object')p.viewOrder={};p.viewOrder[key]=n});let a=arr[pos],b=arr[target];a.viewOrder[key]=target;b.viewOrder[key]=pos;persist()}
 function render(){let c=$('controls'),l=$('list'),items=[];c.innerHTML='';
-if(view==='open'){c.innerHTML='<h2>Alle offenen Proben</h2>';items=ordered().filter(p=>!p.done)}
-else if(view==='done'){c.innerHTML='<h2>Abgeschlossene Proben</h2>';items=ordered().filter(p=>p.done)}
-else{let s=document.createElement('select');s.innerHTML=Object.values(M).flat().map(m=>{let n=data.filter(p=>p.months.includes(m)).length;return `<option value="${m}" ${m===month?'selected':''}>${m} (${n})</option>`}).join('');s.onchange=()=>{month=s.value;render()};c.append(s);let n=data.filter(p=>p.months.includes(month)).length;let h=document.createElement('h2');h.innerHTML=`${month} <span class="count">· ${n} Proben</span>`;c.append(h);items=ordered().filter(p=>!p.done&&p.months.includes(month))}
+if(view==='open'){c.innerHTML='<h2>Alle offenen Proben</h2>';items=ordered('open').filter(p=>!p.done)}
+else if(view==='done'){c.innerHTML='<h2>Abgeschlossene Proben</h2>';items=ordered('done').filter(p=>p.done)}
+else{let s=document.createElement('select');s.innerHTML=Object.values(M).flat().map(m=>{let n=data.filter(p=>p.months.includes(m)).length;return `<option value="${m}" ${m===month?'selected':''}>${m} (${n})</option>`}).join('');s.onchange=()=>{month=s.value;render()};c.append(s);let n=data.filter(p=>p.months.includes(month)).length;let h=document.createElement('h2');h.innerHTML=`${month} <span class="count">· ${n} Proben</span>`;c.append(h);items=ordered('month:'+month).filter(p=>!p.done&&p.months.includes(month))}
 if(!items.length){l.innerHTML='<div class="empty">Hier gibt es noch keine Proben.</div>';return}
-l.innerHTML=items.map((p,pos)=>`<article class="probe"><input type="checkbox" data-check="${p.i}" ${p.done?'checked':''} aria-label="Abgeschlossen"><div class="probe-main"><div class="probe-name">${esc(p.name)}</div><div class="meta">${p.quarter} · ${p.months.join(', ')}</div>${p.details?`<div class="desc">${esc(p.details)}</div>`:''}<div class="actions"><button class="iconbtn" data-up="${p.i}" aria-label="Nach oben" title="Nach oben">↑</button><button class="iconbtn" data-down="${p.i}" aria-label="Nach unten" title="Nach unten">↓</button><button class="iconbtn" data-dup="${p.i}" aria-label="Duplizieren" title="Duplizieren">▢</button><button class="iconbtn" data-edit="${p.i}" aria-label="Bearbeiten" title="Bearbeiten">✎</button><button class="iconbtn" data-del="${p.i}" aria-label="Löschen" title="Löschen">⌫</button></div></div></article>`).join('');
+l.innerHTML=items.map((p,pos)=>`<article class="probe"><input type="checkbox" data-check="${p.i}" ${p.done?'checked':''} aria-label="Abgeschlossen"><div class="probe-main"><div class="probe-name">${esc(p.name)}</div><div class="meta">${p.quarter} · ${p.months.join(', ')}</div>${p.details?`<div class="desc">${esc(p.details)}</div>`:''}<div class="actions"><button class="iconbtn" data-up="${p.i}" aria-label="Nach oben" title="Nach oben">↑</button><button class="iconbtn" data-down="${p.i}" aria-label="Nach unten" title="Nach unten">↓</button><button class="iconbtn" data-dup="${p.i}" aria-label="Duplizieren" title="Probe kopieren">⧉</button><button class="iconbtn" data-edit="${p.i}" aria-label="Bearbeiten" title="Bearbeiten">✎</button><button class="iconbtn" data-del="${p.i}" aria-label="Löschen" title="Löschen">⌫</button></div></div></article>`).join('');
 l.querySelectorAll('[data-check]').forEach(x=>x.onchange=()=>{data[+x.dataset.check].done=x.checked;persist()});
 l.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>{let i=+x.dataset.edit,p=data[i];editing=i;$('name').value=p.name;$('quarter').value=p.quarter;choices(p.months);$('details').value=p.details||'';$('formTitle').textContent='Probe bearbeiten';$('save').textContent='Änderungen speichern';$('cancel').hidden=false;$('formCard').hidden=false;$('toggleForm').hidden=true;scrollTo({top:0,behavior:'smooth'})});
 l.querySelectorAll('[data-del]').forEach(x=>x.onclick=()=>{let i=+x.dataset.del;if(confirm('Diese Probe wirklich löschen?')){data.splice(i,1);persist()}});
 l.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>move(+x.dataset.up,-1));
 l.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>move(+x.dataset.down,1));
-l.querySelectorAll('[data-dup]').forEach(x=>x.onclick=()=>{let p=data[+x.dataset.dup],copy={...p,done:false,order:Math.max(-1,...data.map(q=>Number(q.order)||0))+1};data.push(copy);persist()});
+l.querySelectorAll('[data-dup]').forEach(x=>x.onclick=()=>{let p=data[+x.dataset.dup],copy={...p,done:false,order:Math.max(-1,...data.map(q=>Number(q.order)||0))+1,viewOrder:{}};data.push(copy);persist()});
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));render()});
 $('export').onclick=()=>{let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify({app:'PLANPROBEN',probes:data},null,2)],{type:'application/json'}));a.href=u;a.download='PLANPROBEN-Sicherung.json';a.click();URL.revokeObjectURL(u)};
