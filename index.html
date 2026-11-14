@@ -28,6 +28,7 @@ textarea{min-height:72px}.months{display:grid;grid-template-columns:repeat(3,1fr
 .actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.iconbtn{background:#315584;color:#eaf4ff;font-size:14px;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border-radius:9px;opacity:.92;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}.iconbtn:active{background:#477db5;opacity:1}
 .empty{text-align:center;color:var(--muted);padding:22px}.note{font-size:12px;line-height:1.5;margin-top:12px}
 .form-toggle{width:100%;background:#315584;color:#fff;text-align:left;margin-top:16px}
+.excel-row{display:flex;justify-content:center;margin:7px 0 14px}.excel-import{background:#24466a;color:#eaf4ff;border-radius:8px;padding:5px 9px;font-size:11px;min-height:27px;display:inline-flex;align-items:center;gap:5px;opacity:.95}.excel-import span{font-size:12px}
 .form-card[hidden]{display:none}.count{font-weight:700;color:#b9dcff}
 @media(max-width:420px){main{padding:17px 11px}.card{padding:14px}}
 </style>
@@ -35,6 +36,7 @@ textarea{min-height:72px}.months{display:grid;grid-template-columns:repeat(3,1fr
 <body><main>
 <header><h1>PLANPROBEN</h1></header>
 <button class="form-toggle" id="toggleForm">＋ Neue Probe hinzufügen</button>
+<div class="excel-row"><button class="excel-import" id="excelImport" type="button"><span>▦</span> Excel importieren</button><input id="excelFile" type="file" accept=".xlsx,.xls,.csv" hidden></div>
 <section class="card form-card" id="formCard" hidden>
 <h2 id="formTitle">Neue Probe eintragen</h2>
 <form id="form">
@@ -49,6 +51,7 @@ textarea{min-height:72px}.months{display:grid;grid-template-columns:repeat(3,1fr
 <section class="card"><div id="controls"></div><div id="list"></div></section>
 <section class="card"><h2>Datensicherung</h2><div class="actions"><button class="secondary" id="export">Sicherung exportieren</button><button class="secondary" id="import">Sicherung importieren</button><input id="file" type="file" accept=".json,application/json" hidden></div><div class="note">Die Daten werden lokal auf diesem Gerät gespeichert. Exportiere gelegentlich eine Sicherung.</div></section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const M={Q1:['Januar','Februar','März'],Q2:['April','Mai','Juni'],Q3:['Juli','August','September'],Q4:['Oktober','November','Dezember']},K='proben-vs-227-v2';
 let data=JSON.parse(localStorage.getItem(K)||'[]'),view='open',month='Januar',editing=null;
@@ -87,6 +90,42 @@ l.querySelectorAll('[data-dup]').forEach(x=>x.onclick=()=>duplicateProbe(+x.data
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));render()});
 $('export').onclick=()=>{let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify({app:'PLANPROBEN',probes:data},null,2)],{type:'application/json'}));a.href=u;a.download='PLANPROBEN-Sicherung.json';a.click();URL.revokeObjectURL(u)};
 $('import').onclick=()=>$('file').click();
+// Excel-Import: Spalte A = Produkt, B = Anzahl, C = Monatszahlen (1–12)
+$('excelImport').onclick=()=>$('excelFile').click();
+function quarterForMonth(n){return n<=3?'Q1':n<=6?'Q2':n<=9?'Q3':'Q4'}
+function monthName(n){return Object.values(M).flat()[n-1]}
+$('excelFile').onchange=async e=>{
+ const file=e.target.files&&e.target.files[0]; if(!file)return;
+ try{
+  if(!window.XLSX)throw new Error('Die Excel-Lesehilfe konnte nicht geladen werden. Bitte Internetverbindung prüfen und erneut versuchen.');
+  const buf=await file.arrayBuffer();
+  const book=XLSX.read(buf,{type:'array'}); const sheet=book.Sheets[book.SheetNames[0]];
+  const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true});
+  const planned=[]; let skippedRows=0;
+  for(let r=0;r<rows.length;r++){
+   const row=rows[r]||[]; const name=String(row[0]??'').trim();
+   const qtyRaw=row[1]; const qty=Number(String(qtyRaw).replace(',','.').trim());
+   const monthRaw=String(row[2]??'').trim();
+   if(!name||!Number.isInteger(qty)||qty<1||!monthRaw){skippedRows++;continue;}
+   const nums=[...monthRaw.matchAll(/\d{1,2}/g)].map(m=>Number(m[0])).filter(n=>n>=1&&n<=12);
+   const months=[...new Set(nums)]; if(!months.length){skippedRows++;continue;}
+   if(qty>100){throw new Error(`In Zeile ${r+1} ist die Anzahl größer als 100. Bitte prüfe die Datei.`)}
+   for(const n of months)for(let k=0;k<qty;k++)planned.push({name,quarter:quarterForMonth(n),months:[monthName(n)],details:'',done:false});
+  }
+  if(!planned.length)throw new Error('Es wurden keine passenden Zeilen gefunden. Erwartet werden Produkt in Spalte A, Anzahl in B und Monatszahlen in C.');
+  // Duplikate gegen vorhandene Einträge prüfen (gleicher Name und gleicher Monat).
+  const counts=new Map();
+  data.forEach(p=>(p.months||[]).forEach(m=>{const key=(p.name||'').trim().toLocaleLowerCase('de')+'|'+m;counts.set(key,(counts.get(key)||0)+1)}));
+  const accepted=[];let duplicateCount=0;
+  planned.forEach(p=>{const key=p.name.trim().toLocaleLowerCase('de')+'|'+p.months[0];const n=counts.get(key)||0;if(n>0){counts.set(key,n-1);duplicateCount++;}else accepted.push(p)});
+  const summary=`Excel-Datei: ${file.name}\n\nGefundene neue Proben: ${accepted.length}\nBereits vorhandene gleiche Einträge, übersprungen: ${duplicateCount}\nNicht verwendbare/leer Zeilen: ${skippedRows}\n\nMöchtest du die neuen Proben jetzt hinzufügen?`;
+  if(!confirm(summary))return;
+  let order=Math.max(-1,...data.map(x=>Number(x.order)||0));
+  accepted.forEach(p=>data.push({...p,order:++order,viewOrder:{}}));
+  persist();alert(`${accepted.length} Proben wurden importiert. ${duplicateCount} doppelte Einträge wurden übersprungen.`);
+ }catch(err){alert(err.message||'Die Excel-Datei konnte nicht gelesen werden.');}
+ finally{e.target.value='';}
+};
 $('file').onchange=async e=>{try{let j=JSON.parse(await e.target.files[0].text());if(!Array.isArray(j.probes))throw 0;if(confirm('Vorhandene Daten ersetzen?')){data=j.probes;data.forEach((p,i)=>{if(typeof p.order!=='number')p.order=i});persist();alert('Sicherung wiederhergestellt.')}}catch{alert('Ungültige Sicherungsdatei.')}e.target.value=''};
 render();
 if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});

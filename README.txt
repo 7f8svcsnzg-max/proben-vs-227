@@ -1,17 +1,21 @@
-PLANPROBEN – Updatepaket
+PLANPROBEN – Excel-Import-Update
 
 Enthalten: index.html, manifest.webmanifest, sw.js und App-Symbole.
 
-Änderungen:
-- PLANPROBEN-Überschrift mittig und immer einzeilig.
-- Sortierung mit Pfeilen repariert und getrennte Reihenfolge je Ansicht/Monat.
-- Kopieren-Schaltfläche mit eindeutigem Kopiersymbol; Kopie wird neu und offen angelegt.
-- Aktionssymbole kompakter gestaltet, weiterhin gut antippbar.
-- Service-Worker-Cache aktualisiert.
+Neu:
+- Kleine, dezente Schaltfläche „Excel importieren“ unter „Neue Probe hinzufügen“.
+- Import von .xlsx, .xls und .csv.
+- Erwartetes Tabellenformat: Spalte A = Produktname, Spalte B = Anzahl, Spalte C = Monatszahlen 1 bis 12.
+- Pro angegebener Anzahl wird je ausgewähltem Monat ein eigener offener Probeneintrag erstellt.
+- Monat und Kalenderquartal werden automatisch zugeordnet.
+- Vor dem Import erscheint eine Zusammenfassung. Bereits vorhandene gleiche Produkt-/Monats-Einträge werden übersprungen.
+- Bestehende manuelle Eingabe, Sortierung, Kopieren, Bearbeiten, Löschen und JSON-Sicherung bleiben erhalten.
 
-WICHTIG: Die Proben-Daten sind NICHT in diesem ZIP enthalten. Sie bleiben lokal im Browser gespeichert.
-Der Speicher-Schlüssel proben-vs-227-v2 wurde beibehalten, damit vorhandene Daten auf demselben Gerät und derselben Webadresse erhalten bleiben.
-Vor dem Update bitte in PLANPROBEN eine aktuelle JSON-Sicherung exportieren.
+Hinweise:
+- Die Excel-Lesehilfe wird beim Import aus einem CDN geladen; dafür ist eine Internetverbindung nötig.
+- Die Daten bleiben lokal im Browser. Der Speicher-Schlüssel proben-vs-227-v2 wurde beibehalten.
+- Vor dem Update bitte eine JSON-Sicherung exportieren.
+- Die Excel-Datei muss Produkt, Anzahl und Monatszahlen in den ersten drei Spalten enthalten.
 
-Update über GitHub:
-Die sechs Dateien aus diesem ZIP im bestehenden Repository hochladen/ersetzen und den Commit auf main speichern. Netlify veröffentlicht die Änderung anschließend automatisch.
+Update:
+Die sechs Dateien im Hauptverzeichnis des bestehenden GitHub-Repositories hochladen/ersetzen und auf main committen. Netlify veröffentlicht danach automatisch.
