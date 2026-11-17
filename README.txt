@@ -1,21 +1,21 @@
-PLANPROBEN – Excel-Import-Update
+PLANPROBEN – Premium Dark Hochkant-Update
 
-Enthalten: index.html, manifest.webmanifest, sw.js und App-Symbole.
+Enthalten: index.html, manifest.webmanifest, sw.js, README.txt und App-Symbole.
 
-Neu:
-- Kleine, dezente Schaltfläche „Excel importieren“ unter „Neue Probe hinzufügen“.
-- Import von .xlsx, .xls und .csv.
-- Erwartetes Tabellenformat: Spalte A = Produktname, Spalte B = Anzahl, Spalte C = Monatszahlen 1 bis 12.
-- Pro angegebener Anzahl wird je ausgewähltem Monat ein eigener offener Probeneintrag erstellt.
-- Monat und Kalenderquartal werden automatisch zugeordnet.
-- Vor dem Import erscheint eine Zusammenfassung. Bereits vorhandene gleiche Produkt-/Monats-Einträge werden übersprungen.
-- Bestehende manuelle Eingabe, Sortierung, Kopieren, Bearbeiten, Löschen und JSON-Sicherung bleiben erhalten.
+Änderungen:
+- Smartphone-Hochkantansicht optimiert; kein Drehen erforderlich.
+- Kopfbereich, „Neue Probe hinzufügen“, Excel-Import und Filterleiste bleiben beim Scrollen oben sichtbar.
+- Mengenangabe als freies Textfeld; längere Angaben umbrechen und werden vollständig angezeigt.
+- Excel-Import gemäß der tatsächlich bereitgestellten Datei: Spalte A = Produkt, Spalte B = Mengenangabe, Spalte C = Monatszahlen 1–12.
+- Pro Produkt wird je zugeordnetem Monat ein eigener offener Eintrag angelegt; Monats- und Quartalszuordnung bleiben erhalten.
+- Löschsymbol ist ein Papierkorb.
+- Verschieben, Duplizieren, Bearbeiten, Abschließen und JSON-Sicherung bleiben enthalten.
+- Kein Kalender-/Einzeldatum; Planung erfolgt weiterhin über Monate und Quartale.
 
-Hinweise:
-- Die Excel-Lesehilfe wird beim Import aus einem CDN geladen; dafür ist eine Internetverbindung nötig.
-- Die Daten bleiben lokal im Browser. Der Speicher-Schlüssel proben-vs-227-v2 wurde beibehalten.
-- Vor dem Update bitte eine JSON-Sicherung exportieren.
-- Die Excel-Datei muss Produkt, Anzahl und Monatszahlen in den ersten drei Spalten enthalten.
+Wichtig:
+- Der lokale Speicher-Schlüssel proben-vs-227-v2 und die bestehende App-Adresse werden nicht verändert.
+- Bestehende Datensätze bleiben im lokalen Browser-Speicher; vor dem Upload trotzdem eine JSON-Sicherung exportieren.
+- Excel-Lesehilfe wird beim Import über CDN geladen; Internetverbindung erforderlich.
 
 Update:
-Die sechs Dateien im Hauptverzeichnis des bestehenden GitHub-Repositories hochladen/ersetzen und auf main committen. Netlify veröffentlicht danach automatisch.
+Alle sechs Dateien im Hauptverzeichnis des bestehenden GitHub-Repositories hochladen/ersetzen und auf main committen. Netlify veröffentlicht danach automatisch.

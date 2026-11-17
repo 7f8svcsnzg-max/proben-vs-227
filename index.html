@@ -10,31 +10,33 @@
 <style>
 :root{color-scheme:dark;--bg:#03131f;--panel:#082333;--panel2:#0b2a3b;--line:#155064;--text:#f2fbff;--muted:#a8c5d0;--accent:#19e0d0;--accent2:#00aebc;--danger:#ff7188}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#10445b 0%,#061c2b 42%,#020d17 100%);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-main{max-width:740px;margin:auto;padding:24px 14px 48px}header{text-align:center;min-width:0;margin:2px 0 22px}h1{margin:0 0 5px;font-size:clamp(25px,7vw,34px);letter-spacing:1.4px;white-space:nowrap;line-height:1.2;font-weight:800}h1 span{color:var(--accent)}.tagline{font-size:10px;letter-spacing:3px;color:#a9dce3;font-weight:600}
+main{max-width:740px;margin:auto;padding:24px 14px 48px}header{text-align:center;min-width:0;margin:2px 0 12px}h1{margin:0 0 5px;font-size:clamp(25px,7vw,34px);letter-spacing:1.4px;white-space:nowrap;line-height:1.2;font-weight:800}h1 span{color:var(--accent)}.sticky-area{position:sticky;top:0;z-index:20;padding:env(safe-area-inset-top) 0 8px;background:linear-gradient(180deg,#041723 0%,#041723f5 88%,#04172300 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .card{background:linear-gradient(145deg,rgba(12,48,65,.96),rgba(4,27,42,.98));border:1px solid #155064;border-radius:20px;padding:16px;margin:16px 0;box-shadow:0 12px 30px #0006,inset 0 1px #ffffff0a}
 h2{font-size:18px;margin:0 0 14px}.muted,.meta,.note{color:var(--muted)}
 .field{margin:12px 0}.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px}input[type=text],textarea,select{width:100%;background:#061d2b;color:var(--text);border:1px solid #226176;border-radius:12px;padding:13px;font:inherit;min-height:48px}textarea{min-height:72px}.months{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.month{background:#0b2d3e;border:1px solid #155064;border-radius:10px;padding:9px 6px;font-size:13px}.month input{accent-color:var(--accent)}button{border:0;border-radius:12px;padding:11px 14px;font-weight:650;cursor:pointer;touch-action:manipulation}
 .primary{width:100%;background:linear-gradient(115deg,#20e3d1,#00a9ba);color:#03212a;min-height:50px;box-shadow:0 6px 18px #00cbbb30}.secondary,.tab,.small,.tools button{background:#10384a;color:#eafcff;border:1px solid #1b5266}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:18px 0}.tab{font-size:13px;padding:11px 4px;background:linear-gradient(145deg,#0b2b3c,#071e2d)}.tab.active{background:linear-gradient(120deg,#16d9cb,#009db3);color:#03212a;border-color:#36f5e5;box-shadow:0 5px 16px #00d9cc30}
-.probe{display:flex;gap:11px;background:linear-gradient(120deg,#0c3042,#061e2e);border:1px solid #155064;border-radius:16px;padding:13px;margin:10px 0;box-shadow:inset 3px 0 #16d9d0,0 6px 16px #0002}.probe>input{width:22px;height:22px;accent-color:var(--accent);flex:0 0 22px}.probe-main{flex:1;min-width:0}.probe-name{font-weight:700;overflow-wrap:anywhere;font-size:15px}.meta{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.quarter-pill{display:inline-flex;align-items:center;border-radius:99px;padding:3px 9px;background:#075d61;color:#75fff0;font-weight:750;border:1px solid #0a9992}.desc{font-size:14px;margin-top:7px;white-space:pre-wrap;overflow-wrap:anywhere}
+.probe{display:flex;gap:9px;background:linear-gradient(120deg,#0c3042,#061e2e);border:1px solid #155064;border-radius:16px;padding:13px;margin:10px 0;box-shadow:inset 3px 0 #16d9d0,0 6px 16px #0002}.probe>input{width:22px;height:22px;accent-color:var(--accent);flex:0 0 22px}.probe-main{flex:1;min-width:0}.probe-side{display:flex;flex-direction:column;gap:5px;flex:0 0 auto}.probe-side .iconbtn{width:34px;height:34px;min-width:34px;min-height:34px}.quantity{font-size:13px;color:#bcece9;margin-top:4px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.35}.probe-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.probe-name{font-weight:700;overflow-wrap:anywhere;font-size:15px}.meta{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.quarter-pill{display:inline-flex;align-items:center;border-radius:99px;padding:3px 9px;background:#075d61;color:#75fff0;font-weight:750;border:1px solid #0a9992}.desc{font-size:14px;margin-top:7px;white-space:pre-wrap;overflow-wrap:anywhere}
 .actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.iconbtn{background:#10394c;color:#dffaff;border:1px solid #185267;font-size:14px;width:35px;height:35px;min-width:35px;min-height:35px;padding:0;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}.iconbtn:active{background:#087d83}.iconbtn[data-del]{color:#ffb3c0;background:#3b2432;border-color:#67394b}.empty{text-align:center;color:var(--muted);padding:22px}.note{font-size:12px;line-height:1.5;margin-top:12px}.form-toggle{width:100%;background:linear-gradient(115deg,#1ce0d0,#00a7b9);color:#03212a;text-align:left;margin-top:8px;min-height:50px;box-shadow:0 6px 18px #00cbbb25}.excel-row{display:flex;justify-content:center;margin:8px 0 15px}.excel-import{background:#082a3a;color:#bafbf5;border:1px solid #0bb8b8;border-radius:9px;padding:4px 8px;font-size:10px;min-height:25px;display:inline-flex;align-items:center;gap:5px;opacity:.96}.excel-import span{font-size:11px}.form-card[hidden]{display:none}.count{font-weight:700;color:#52e9df}
-@media(max-width:420px){main{padding:18px 11px 40px}.card{padding:14px}.probe{padding:12px}.tabs{gap:6px}.tab{font-size:12px}}
+@media(max-width:420px){main{padding:10px 9px 36px}.card{padding:12px}.probe{padding:10px;gap:7px}.tabs{gap:5px;margin:10px 0}.tab{font-size:11px;padding:10px 2px}.probe-side .iconbtn{width:32px;height:32px;min-width:32px;min-height:32px}.probe-actions .iconbtn{width:34px;height:34px;min-width:34px;min-height:34px}}
 </style>
 </head>
 <body><main>
-<header><h1>PLAN<span>PROBEN</span></h1><div class="tagline">PROBENPLANUNG &amp; ÜBERSICHT</div></header>
+<div class="sticky-area"><header><h1>PLAN<span>PROBEN</span></h1></header>
 <button class="form-toggle" id="toggleForm">＋ Neue Probe hinzufügen</button>
 <div class="excel-row"><button class="excel-import" id="excelImport" type="button"><span>▦</span> Excel importieren</button><input id="excelFile" type="file" accept=".xlsx,.xls,.csv" hidden></div>
+
+<nav class="tabs"><button class="tab active" data-view="open">Alle offenen</button><button class="tab" data-view="month">Nach Monat</button><button class="tab" data-view="done">Abgeschlossen</button></nav></div>
 <section class="card form-card" id="formCard" hidden>
 <h2 id="formTitle">Neue Probe eintragen</h2>
 <form id="form">
 <div class="field"><label for="name">Name der Probe</label><input id="name" type="text" placeholder="Name der Probe eingeben" autocomplete="off" required></div>
+<div class="field"><label for="quantity">Mengenangabe</label><textarea id="quantity" placeholder="z. B. 2 Stück, 2 Packungen oder 1 Liter"></textarea></div>
 <div class="field"><label for="quarter">Quartal</label><select id="quarter"><option value="Q1">Q1 · Januar–März</option><option value="Q2">Q2 · April–Juni</option><option value="Q3">Q3 · Juli–September</option><option value="Q4">Q4 · Oktober–Dezember</option></select></div>
 <div class="field"><label>Monat(e)</label><div class="months" id="months"></div></div>
 <div class="field"><label for="details">Details (optional)</label><textarea id="details" placeholder="Zusätzliche Informationen …"></textarea></div>
 <button class="primary" id="save">Probe speichern</button> <button type="button" class="secondary" id="cancel" hidden>Abbrechen</button>
 </form><div class="note">Eine Probe kann mehreren Monaten zugeordnet werden.</div>
 </section>
-<nav class="tabs"><button class="tab active" data-view="open">Alle offenen</button><button class="tab" data-view="month">Nach Monat</button><button class="tab" data-view="done">Abgeschlossen</button></nav>
 <section class="card"><div id="controls"></div><div id="list"></div></section>
 <section class="card"><h2>Datensicherung</h2><div class="actions"><button class="secondary" id="export">Sicherung exportieren</button><button class="secondary" id="import">Sicherung importieren</button><input id="file" type="file" accept=".json,application/json" hidden></div><div class="note">Die Daten werden lokal auf diesem Gerät gespeichert. Exportiere gelegentlich eine Sicherung.</div></section>
 </main>
@@ -47,11 +49,11 @@ data.forEach(p=>{if(typeof p.order!=='number')p.order=data.indexOf(p);});
 function choices(sel=[]){$('months').innerHTML=M[$('quarter').value].map(m=>`<label class="month"><input type="checkbox" value="${m}" ${sel.includes(m)?'checked':''}> ${m}</label>`).join('')}
 $('quarter').onchange=()=>choices();choices();
 function persist(){localStorage.setItem(K,JSON.stringify(data));render()}
-function closeForm(){editing=null;$('form').reset();$('quarter').value='Q1';choices();$('formTitle').textContent='Neue Probe eintragen';$('save').textContent='Probe speichern';$('cancel').hidden=true;$('formCard').hidden=true;$('toggleForm').hidden=false}
+function closeForm(){editing=null;$('form').reset();$('quantity').value='';$('quarter').value='Q1';choices();$('formTitle').textContent='Neue Probe eintragen';$('save').textContent='Probe speichern';$('cancel').hidden=true;$('formCard').hidden=true;$('toggleForm').hidden=false}
 $('toggleForm').onclick=()=>{$('formCard').hidden=false;$('toggleForm').hidden=true;$('name').focus()};
 $('cancel').onclick=closeForm;
 $('form').onsubmit=e=>{e.preventDefault();let months=[...$('months').querySelectorAll('input:checked')].map(x=>x.value),name=$('name').value.trim();if(!name||!months.length){alert('Bitte Namen und mindestens einen Monat angeben.');return}
-let p={name,quarter:$('quarter').value,months,details:$('details').value.trim()};
+let p={name,quantity:$('quantity').value.trim(),quarter:$('quarter').value,months,details:$('details').value.trim()};
 if(editing!==null)data[editing]={...data[editing],...p};else{let max=Math.max(-1,...data.map(x=>Number(x.order)||0));data.push({...p,done:false,order:max+1})}
 closeForm();persist()};
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -66,9 +68,9 @@ if(view==='open'){c.innerHTML='<h2>Alle offenen Proben</h2>';items=ordered('open
 else if(view==='done'){c.innerHTML='<h2>Abgeschlossene Proben</h2>';items=ordered('done').filter(p=>p.done)}
 else{let s=document.createElement('select');s.innerHTML=Object.values(M).flat().map(m=>{let n=data.filter(p=>p.months.includes(m)).length;return `<option value="${m}" ${m===month?'selected':''}>${m} (${n})</option>`}).join('');s.onchange=()=>{month=s.value;render()};c.append(s);let n=data.filter(p=>p.months.includes(month)).length;let h=document.createElement('h2');h.innerHTML=`${month} <span class="count">· ${n} Proben</span>`;c.append(h);items=ordered('month:'+month).filter(p=>!p.done&&p.months.includes(month))}
 if(!items.length){l.innerHTML='<div class="empty">Hier gibt es noch keine Proben.</div>';return}
-l.innerHTML=items.map((p,pos)=>`<article class="probe"><input type="checkbox" data-check="${p.i}" ${p.done?'checked':''} aria-label="Abgeschlossen"><div class="probe-main"><div class="probe-name">${esc(p.name)}</div><div class="meta"><span>${p.months.join(', ')}</span><span class="quarter-pill">${p.quarter}</span></div>${p.details?`<div class="desc">${esc(p.details)}</div>`:''}<div class="actions"><button type="button" class="iconbtn" data-up="${p.i}" aria-label="Nach oben" title="Nach oben">↑</button><button type="button" class="iconbtn" data-down="${p.i}" aria-label="Nach unten" title="Nach unten">↓</button><button type="button" class="iconbtn" data-dup="${p.i}" aria-label="Duplizieren" title="Probe kopieren">⧉</button><button type="button" class="iconbtn" data-edit="${p.i}" aria-label="Bearbeiten" title="Bearbeiten">✎</button><button type="button" class="iconbtn" data-del="${p.i}" aria-label="Löschen" title="Löschen">⌫</button></div></div></article>`).join('');
+l.innerHTML=items.map((p,pos)=>`<article class="probe"><input type="checkbox" data-check="${p.i}" ${p.done?'checked':''} aria-label="Abgeschlossen"><div class="probe-main"><div class="probe-name">${esc(p.name)}</div>${p.quantity?`<div class="quantity">${esc(p.quantity)}</div>`:''}<div class="meta"><span>${(p.months||[]).join(', ')}</span><span class="quarter-pill">${p.quarter}</span></div>${p.details?`<div class="desc">${esc(p.details)}</div>`:''}<div class="probe-actions"><button type="button" class="iconbtn" data-up="${p.i}" aria-label="Nach oben" title="Nach oben">↑</button><button type="button" class="iconbtn" data-down="${p.i}" aria-label="Nach unten" title="Nach unten">↓</button><button type="button" class="iconbtn" data-dup="${p.i}" aria-label="Duplizieren" title="Probe kopieren">⧉</button></div></div><div class="probe-side"><button type="button" class="iconbtn" data-edit="${p.i}" aria-label="Bearbeiten" title="Bearbeiten">✎</button><button type="button" class="iconbtn" data-del="${p.i}" aria-label="Löschen" title="Löschen">🗑️</button></div></article>`).join('');
 l.querySelectorAll('[data-check]').forEach(x=>x.onchange=()=>{data[+x.dataset.check].done=x.checked;persist()});
-l.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>{let i=+x.dataset.edit,p=data[i];editing=i;$('name').value=p.name;$('quarter').value=p.quarter;choices(p.months);$('details').value=p.details||'';$('formTitle').textContent='Probe bearbeiten';$('save').textContent='Änderungen speichern';$('cancel').hidden=false;$('formCard').hidden=false;$('toggleForm').hidden=true;scrollTo({top:0,behavior:'smooth'})});
+l.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>{let i=+x.dataset.edit,p=data[i];editing=i;$('name').value=p.name;$('quantity').value=p.quantity||'';$('quarter').value=p.quarter;choices(p.months);$('details').value=p.details||'';$('formTitle').textContent='Probe bearbeiten';$('save').textContent='Änderungen speichern';$('cancel').hidden=false;$('formCard').hidden=false;$('toggleForm').hidden=true;scrollTo({top:0,behavior:'smooth'})});
 l.querySelectorAll('[data-del]').forEach(x=>x.onclick=()=>{let i=+x.dataset.del;if(confirm('Diese Probe wirklich löschen?')){data.splice(i,1);persist()}});
 l.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>move(+x.dataset.up,-1));
 l.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>move(+x.dataset.down,1));
@@ -77,7 +79,7 @@ l.querySelectorAll('[data-dup]').forEach(x=>x.onclick=()=>duplicateProbe(+x.data
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));render()});
 $('export').onclick=()=>{let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify({app:'PLANPROBEN',probes:data},null,2)],{type:'application/json'}));a.href=u;a.download='PLANPROBEN-Sicherung.json';a.click();URL.revokeObjectURL(u)};
 $('import').onclick=()=>$('file').click();
-// Excel-Import: Spalte A = Produkt, B = Anzahl, C = Monatszahlen (1–12)
+// Excel-Import: A = Produkt, B = freie Mengenangabe, C = Monatszahlen 1–12.
 $('excelImport').onclick=()=>$('excelFile').click();
 function quarterForMonth(n){return n<=3?'Q1':n<=6?'Q2':n<=9?'Q3':'Q4'}
 function monthName(n){return Object.values(M).flat()[n-1]}
@@ -85,33 +87,21 @@ $('excelFile').onchange=async e=>{
  const file=e.target.files&&e.target.files[0]; if(!file)return;
  try{
   if(!window.XLSX)throw new Error('Die Excel-Lesehilfe konnte nicht geladen werden. Bitte Internetverbindung prüfen und erneut versuchen.');
-  const buf=await file.arrayBuffer();
-  const book=XLSX.read(buf,{type:'array'}); const sheet=book.Sheets[book.SheetNames[0]];
-  const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true});
-  const planned=[]; let skippedRows=0;
+  const buf=await file.arrayBuffer(); const book=XLSX.read(buf,{type:'array'}); const sheet=book.Sheets[book.SheetNames[0]];
+  const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true}); const planned=[]; let skippedRows=0;
   for(let r=0;r<rows.length;r++){
-   const row=rows[r]||[]; const name=String(row[0]??'').trim();
-   const qtyRaw=row[1]; const qty=Number(String(qtyRaw).replace(',','.').trim());
-   const monthRaw=String(row[2]??'').trim();
-   if(!name||!Number.isInteger(qty)||qty<1||!monthRaw){skippedRows++;continue;}
-   const nums=[...monthRaw.matchAll(/\d{1,2}/g)].map(m=>Number(m[0])).filter(n=>n>=1&&n<=12);
-   const months=[...new Set(nums)]; if(!months.length){skippedRows++;continue;}
-   if(qty>100){throw new Error(`In Zeile ${r+1} ist die Anzahl größer als 100. Bitte prüfe die Datei.`)}
-   for(const n of months)for(let k=0;k<qty;k++)planned.push({name,quarter:quarterForMonth(n),months:[monthName(n)],details:'',done:false});
+   const row=rows[r]||[]; const name=String(row[0]??'').trim(); const quantity=String(row[1]??'').trim(); const monthRaw=String(row[2]??'').trim();
+   if(!name||/^a[- ]?produkt$/i.test(name)||!monthRaw){skippedRows++;continue;}
+   const nums=[...monthRaw.matchAll(/\d{1,2}/g)].map(m=>Number(m[0])).filter(n=>n>=1&&n<=12); const months=[...new Set(nums)];
+   if(!months.length){skippedRows++;continue;}
+   for(const n of months)planned.push({name,quantity,quarter:quarterForMonth(n),months:[monthName(n)],details:'',done:false});
   }
-  if(!planned.length)throw new Error('Es wurden keine passenden Zeilen gefunden. Erwartet werden Produkt in Spalte A, Anzahl in B und Monatszahlen in C.');
-  // Duplikate gegen vorhandene Einträge prüfen (gleicher Name und gleicher Monat).
-  const counts=new Map();
-  data.forEach(p=>(p.months||[]).forEach(m=>{const key=(p.name||'').trim().toLocaleLowerCase('de')+'|'+m;counts.set(key,(counts.get(key)||0)+1)}));
-  const accepted=[];let duplicateCount=0;
-  planned.forEach(p=>{const key=p.name.trim().toLocaleLowerCase('de')+'|'+p.months[0];const n=counts.get(key)||0;if(n>0){counts.set(key,n-1);duplicateCount++;}else accepted.push(p)});
-  const summary=`Excel-Datei: ${file.name}\n\nGefundene neue Proben: ${accepted.length}\nBereits vorhandene gleiche Einträge, übersprungen: ${duplicateCount}\nNicht verwendbare/leer Zeilen: ${skippedRows}\n\nMöchtest du die neuen Proben jetzt hinzufügen?`;
-  if(!confirm(summary))return;
-  let order=Math.max(-1,...data.map(x=>Number(x.order)||0));
-  accepted.forEach(p=>data.push({...p,order:++order,viewOrder:{}}));
-  persist();alert(`${accepted.length} Proben wurden importiert. ${duplicateCount} doppelte Einträge wurden übersprungen.`);
- }catch(err){alert(err.message||'Die Excel-Datei konnte nicht gelesen werden.');}
- finally{e.target.value='';}
+  if(!planned.length)throw new Error('Keine passenden Zeilen gefunden. Erwartet werden Produkt in Spalte A, Menge in B und Monatszahlen in C.');
+  const counts=new Map(); data.forEach(p=>(p.months||[]).forEach(m=>{const k=(p.name||'').trim().toLocaleLowerCase('de')+'|'+m;counts.set(k,(counts.get(k)||0)+1)}));
+  const accepted=[];let duplicateCount=0; planned.forEach(p=>{const k=p.name.trim().toLocaleLowerCase('de')+'|'+p.months[0];const n=counts.get(k)||0;if(n>0){counts.set(k,n-1);duplicateCount++}else accepted.push(p)});
+  const summary=`Excel-Datei: ${file.name}\n\nNeue Einträge: ${accepted.length}\nGleiche Produkt-/Monats-Einträge übersprungen: ${duplicateCount}\nNicht verwendbare/leer Zeilen: ${skippedRows}\n\nDie Mengenangaben aus Spalte B werden unverändert übernommen.\nMöchtest du importieren?`;
+  if(!confirm(summary))return; let order=Math.max(-1,...data.map(x=>Number(x.order)||0)); accepted.forEach(p=>data.push({...p,order:++order,viewOrder:{}})); persist(); alert(`${accepted.length} Proben wurden importiert. ${duplicateCount} doppelte Einträge wurden übersprungen.`);
+ }catch(err){alert(err.message||'Die Excel-Datei konnte nicht gelesen werden.');} finally{e.target.value='';}
 };
 $('file').onchange=async e=>{try{let j=JSON.parse(await e.target.files[0].text());if(!Array.isArray(j.probes))throw 0;if(confirm('Vorhandene Daten ersetzen?')){data=j.probes;data.forEach((p,i)=>{if(typeof p.order!=='number')p.order=i});persist();alert('Sicherung wiederhergestellt.')}}catch{alert('Ungültige Sicherungsdatei.')}e.target.value=''};
 render();
